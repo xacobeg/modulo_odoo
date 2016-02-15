@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	<!-- ACTIONS -->
+        <record id="action_espectaculo_form" model="ir.actions.act_window">
+            <field name="name">Espectáculo</field>
+            <field name="res_model">espectaculo</field>            
+            <field name="view_mode">tree,form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+        </record>
+        <record id="action_curso_form" model="ir.actions.act_window">
+            <field name="name">Cursos</field>
+            <field name="res_model">curso</field>            
+            <field name="view_mode">tree,form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+        </record>
+        <record id="action_alumno_form" model="ir.actions.act_window">
+            <field name="name">Alumnos</field>
+            <field name="res_model">res.partner</field>            
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_alumnos': 1}</field>
+        </record>
+        <!-- MENUITEMS --> 	
+	<menuitem id="menu_gestion_eventos" name="Gestión de Eventos" parent=""
+                  sequence="5"/>
+	<menuitem id="menu_seccion_localizacion" 
+                  name="Localizaciones" parent="menu_gestion_eventos"/>	
+	<menuitem id="menu_gestion_localizacion_lateral" 
+                  name="Gestión de Localizaciones" 
+                  parent="menu_seccion_localizacion"
+                  action="action_localizacion_form"/>	
+	<menuitem id="menu_seccion_eventos" 
+                  name="Eventos" 
+                  parent="menu_gestion_eventos"/>
+	<menuitem id="menu_gestion_evento_lateral" 
+                  name="Gestión de Eventos/Espectáculos" 
+                  parent="menu_seccion_evento" 
+                  action="action_evento_form"/>
+	<menuitem id="menu_seccion_entradas" 
+                  name="Entradas" 
+                  parent="menu_gestion_eventos"/>
+	<menuitem id="menu_gestion_entradas_lateral" 
+                  name="Gestión de Entradas" 
+                  parent="menu_seccion_entradas" 
+                  action="action_entradas_form"/>
+        <!-- VIEWS -->  	
+        <!-- FORMS  -->
+	<record model="ir.ui.view" id="gestion_aula_form_view">
+            <field name="name">gestion_aula.form</field>
+            <field name="model">aula</field>	    	
+	    <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Aulas">
+                <sheet>
+                <group string="Aulas">           	
+		<field name="name"/>
+		<field name="descripcion"/>
+		<field name="codigo"/>
+                <field name="ubicacion"/>
+                <field name="num_cursos" colspan="2"/>
+                </group>
+                </sheet>				
+            </form>			    	
+            </field>
+	</record>
+	<record model="ir.ui.view" id="gestion_curso_form_view">
+            <field name="name">gestion_curso.form</field>
+            <field name="model">curso</field>	    	
+	    <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Cursos">
+                <sheet string="Cursos" cols="4">
+                <group>        	
+		<field name="name" colspan="2"/>
+		<field name="descripcion" colspan="2"/>
+		<field name="estudios" colspan="2" />
+                <field name="num_alumnos" colspan="2"/>
+                </group>
+                
+                <notebook>
+                    <page string="Aulas">
+                    <field name="aula_ids" colspan="2" nolabel="1"/>
+                    </page>
+                    <page string="Alumnos">
+                    <field name="alumno_ids" colspan="2" nolabel="1"/>
+                    </page>                    
+                </notebook>      
+                             
+                </sheet>				
+            </form>			    	
+            </field>
+	</record>
+<!--	<record model="ir.ui.view" id="gestion_alumno_form_view">
+            <field name="name">gestion_alumno.form</field>
+            <field name="model">alumno</field>	    	
+	    <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Alumnos">            	
+		<field name="name"/>
+		<field name="direccion"/>
+                <field name="localidad"/>
+                <field name="provincia"/>
+		<field name="telefono"/>
+                <field name="fecha_nacimiento"/>
+                <field name="email"/>
+                <field name="curso_id"/>                				
+            </form>			    	
+            </field>
+	</record>-->
+	<record model="ir.ui.view" id="res_partner_form_inherit_view">
+            <field name="name">res partner alumno</field>
+            <field name="model">res.partner</field>	    	
+	    <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="website"]' position='after'>
+                    <field name="es_alumno"/>
+                    <field name="curso_id"/>
+                </xpath>
+            </field>
+	</record>        
+        <!-- TREES -->
+	<record model="ir.ui.view" id="gestion_aula_tree_view">
+            <field name="name">gestion_aula.tree</field>
+            <field name="model">aula</field>	    	
+	    <field name="type">tree</field>
+            <field name="arch" type="xml">
+            <tree string="Aulas">            	
+		<field name="name"/>
+		<field name="descripcion"/>
+		<field name="ubicacion"/>
+                <field name="codigo"/>				
+            </tree>			    	
+            </field>
+	</record>
+	<record model="ir.ui.view" id="gestion_curso_tree_view">
+            <field name="name">gestion_curso.tree</field>
+            <field name="model">curso</field>	    	
+	    <field name="type">tree</field>
+            <field name="arch" type="xml">
+            <tree string="Cursos">            	
+		<field name="name"/>
+		<field name="descripcion"/>
+		<field name="estudios"/>
+                <field name="aula_ids"/>				
+            </tree>			    	
+            </field>
+	</record>
+<!--	<record model="ir.ui.view" id="gestion_alumno_tree_view">
+            <field name="name">gestion_alumno.tree</field>
+            <field name="model">alumno</field>	    	
+	    <field name="type">tree</field>
+            <field name="arch" type="xml">
+            <tree string="Alumnos">            	
+		<field name="name"/>
+		<field name="direccion"/>
+                <field name="localidad"/>
+                <field name="provincia"/>
+		<field name="telefono"/>
+                <field name="fecha_nacimiento"/>
+                <field name="email"/>
+                <field name="curso_id"/>                				
+            </tree>			    	
+            </field>
+	</record>-->
+	<!-- SEARCH de alumnos -->
+	<record model="ir.ui.view" id="res_partner_view_inherit_search">
+        <field name="name">Filtros de Alumnos</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" /> 
+        <field name="arch" type="xml">
+        	<xpath expr="filter[@string='Persons']" position='before'>
+        		<filter name="alumnos" string="Alumnos"
+        				domain="[('es_alumno','=',1)]"/>    				        							
+		</xpath> 
+	</field>
+	</record>
+	</data>
+</openerp>

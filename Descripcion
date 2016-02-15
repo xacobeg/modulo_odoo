@@ -1,0 +1,16 @@
+Modelos:
+	-Espectáculo
+		-Herencia: calendar.event
+		-Localización
+
+	-Localización
+		-Herencia: contact_address
+		-Aforo
+
+	-Entrada
+		-Herencia: product
+		-Espectáculo
+
+	-Cliente
+		-Herencia: res.partner
+		-Entradas
